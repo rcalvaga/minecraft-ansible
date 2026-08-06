@@ -1,0 +1,75 @@
+- name: Install and Configure Minecraft Bedrock Dedicated Server
+  hosts: minecraft_servers
+  become: "yes"
+  vars:
+    minecraft_version: 1.18.1
+    minecraft_download_url: >-
+      https://platform.minecraft.net/games/bedrock-dedicated-server/{{ minecraft_version }}/bedrock_server-{{
+      minecraft_version }}_linux.tar.gz
+    minecraft_install_dir: /opt/minecraft_server
+    minecraft_user: minecraft
+    minecraft_group: minecraft
+    minecraft_port: 19132
+    minecraft_max_players: 20
+    minecraft_gamemode: survival
+    minecraft_difficulty: normal
+    minecraft_level_name: world
+    minecraft_level_seed: some_seed
+    minecraft_level_gameplay: DEFAULT
+    minecraft_server_properties: "{{ lookup('file', 'server.properties.j2') }}"
+  vars_files:
+    - secrets.yml
+  pre_tasks:
+    - name: Ensure minecraft user and group exist
+      user:
+        name: "{{ minecraft_user }}"
+        group: "{{ minecraft_group }}"
+        system: "yes"
+      become: "yes"
+    - name: Ensure minecraft install directory exists
+      file:
+        path: "{{ minecraft_install_dir }}"
+        state: directory
+        owner: "{{ minecraft_user }}"
+        group: "{{ minecraft_group }}"
+        mode: "0755"
+      become: "yes"
+  tasks:
+    - name: Download Minecraft Bedrock Dedicated Server
+      get_url:
+        url: "{{ minecraft_download_url }}"
+        dest: /tmp/bedrock_server.tar.gz
+      become: "yes"
+    - name: Extract Minecraft Bedrock Dedicated Server
+      unarchive:
+        src: /tmp/bedrock_server.tar.gz
+        dest: "{{ minecraft_install_dir }}"
+        remote_src: "yes"
+      become: "yes"
+    - name: Move server files to appropriate location
+      command: mv "{{ minecraft_install_dir}}/bedrock_server-{{ minecraft_version }}"/{{ minecraft_install_dir }}
+      become: "yes"
+    - name: Set server permissions
+      file:
+        path: "{{ minecraft_install_dir }}"
+        owner: "{{ minecraft_user }}"
+        group: "{{ minecraft_group }}"
+        mode: "0755"
+      become: "yes"
+    - name: Start Minecraft Bedrock Dedicated Server
+      service:
+        name: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/bedrock_server"
+        enabled: "yes"
+        state: started
+      become: "yes"
+    - name: Configure Minecraft Bedrock Dedicated Server
+      template:
+        src: server.properties.j2
+        dest: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/eula.txt"
+      become: "yes"
+      notify: Restart Minecraft Bedrock Dedicated Server
+  handlers:
+    - name: Restart Minecraft Bedrock Dedicated Server
+      service:
+        name: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/bedrock_server"
+        state: restarted
