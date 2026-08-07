@@ -74,20 +74,6 @@
         src: server.properties.j2
         dest: "{{ minecraft_install_dir }}/server.properties"
 
-    - name: Configure firewall to allow SSH traffic
-      ufw:
-        rule: allow
-        port: 22
-        proto: tcp
-        state: enabled  
-
-    - name: Configure firewall to allow Minecraft Bedrock Dedicated Server traffic
-      ufw:
-        rule: allow
-        port: "{{ minecraft_server_port }}"
-        proto: udp
-        state: enabled
-
     - name: Create systemd service for Minecraft Bedrock Dedicated Server
       copy:
         dest: /etc/systemd/system/minecraft.service
