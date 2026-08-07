@@ -11,8 +11,9 @@
     minecraft_server_port: 19132
     minecraft_max_players: 4
     minecraft_gamemode: creative
-    minecraft_allow_list: false
     minecraft_difficulty: normal
+    minecraft_allow_cheats: true
+    minecraft_allow_list: false
     minecraft_level_name: Bedrock level
     minecraft_level_seed: Any
     server_properties: server.properties.j2
