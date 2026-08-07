@@ -68,18 +68,11 @@
         owner: "{{ minecraft_user }}"
         group: "{{ minecraft_group }}"
         mode: "0755"
-     
-    - name: Start Minecraft Bedrock Dedicated Server
-      service:
-        name: "{{ minecraft_install_dir }}/bedrock_server"
-        enabled: "yes"
-        state: started
 
     - name: Configure Minecraft Bedrock Dedicated Server
       template:
         src: server.properties.j2
         dest: "{{ minecraft_install_dir }}/server.properties"
-      notify: Restart Minecraft Bedrock Dedicated Server
 
     - name: Configure firewall to allow SSH traffic
       ufw:
@@ -95,8 +88,31 @@
         proto: udp
         state: enabled
 
-  handlers:
-    - name: Restart Minecraft Bedrock Dedicated Server
+    - name: Create systemd service for Minecraft Bedrock Dedicated Server
+      copy:
+        dest: /etc/systemd/system/minecraft.service
+        content: |
+          [Unit]
+          Description=Minecraft Bedrock Dedicated Server
+          After=network.target
+
+          [Service]
+          User={{ minecraft_user }}
+          Group={{ minecraft_group }}
+          WorkingDirectory={{ minecraft_install_dir }}
+          ExecStart={{ minecraft_install_dir }}/bedrock_server
+          Restart=on-failure
+          Nice=1
+
+          [Install]
+          WantedBy=multi-user.target
+    
+    - name: Reload systemd daemon
+      systemd:
+        daemon_reload: "yes"
+
+    - name: Start Minecraft Bedrock Dedicated Server
       service:
-        name: "{{ minecraft_install_dir }}/bedrock_server"
-        state: restarted
+        name: "minecraft"
+        enabled: "yes"
+        state: started
