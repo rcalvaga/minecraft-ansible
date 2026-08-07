@@ -18,7 +18,7 @@
     minecraft_level_seed: Any
     server_properties: server.properties.j2
 
-  pre_tasks:
+  tasks:
     - name: Ensure minecraft user and group exist
       user:
         name: "{{ minecraft_user }}"
@@ -34,7 +34,6 @@
         group: "{{ minecraft_group }}"
         mode: "0755"
  
-  tasks:
     - name: update apt cache
       apt:
         update_cache: "yes"
