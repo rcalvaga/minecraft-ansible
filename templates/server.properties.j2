@@ -2,7 +2,7 @@ server-name=Nicomax Dedicated Server
 # Used as the server name
 # Allowed values: Any string without semicolon symbol.
 
-gamemode=creative
+gamemode={{ minecraft_gamemode }}
 # Sets the game mode for new players.
 # Allowed values: "survival", "creative", or "adventure"
 
@@ -16,7 +16,7 @@ force-gamemode=false
 # other than the gamemode value saved by the server during world creation
 # if those values are set in server.properties after world creation.
 
-difficulty=easy
+difficulty={{ minecraft_difficulty }}
 # Sets the difficulty of the world.
 # Allowed values: "peaceful", "easy", "normal", or "hard"
 
@@ -24,7 +24,7 @@ allow-cheats=false
 # If true then cheats like commands can be used.
 # Allowed values: "true" or "false"
 
-max-players=4
+max-players={{ minecraft_max_players}}
 # The maximum number of players that can play on the server.
 # Allowed values: Any positive integer
 
@@ -38,7 +38,7 @@ allow-list=false
 # If true then all connected players must be listed in the separate allowlist.json file.
 # Allowed values: "true" or "false"
 
-server-port=19132
+server-port={{ minecraft_server_port }}
 # Which IPv4 port the server should listen to.
 # Allowed values: Integers in the range [1, 65535]
 
@@ -101,10 +101,10 @@ max-threads=8
 # Maximum number of threads the server will try to use. If set to 0 or removed then it will use as many as possible.
 # Allowed values: Any positive integer.
 
-level-name=Bedrock level
+level-name={{ minecraft_level_name }}
 # Allowed values: Any string without semicolon symbol or symbols illegal for file name: /\n\r\t\f`?*\\<>|\":
 
-level-seed=Any
+level-seed={{ minecraft_level_seed }}
 # Use to randomize the world
 # Allowed values: Any string
 

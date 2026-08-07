@@ -7,12 +7,12 @@
     minecraft_install_dir: /opt/minecraft_server
     minecraft_user: minecraft
     minecraft_group: minecraft
-    server-port: 19132
-    max-players: 4
-    gamemode: creative
-    difficulty: normal
-    level-name: Bedrock level
-    level-seed: Any
+    minecraft_server_port: 19132
+    minecraft_max_players: 4
+    minecraft_gamemode: creative
+    minecraft_difficulty: normal
+    minecraft_level_name: Bedrock level
+    minecraft_level_seed: Any
     server_properties: server.properties.j2
 
   pre_tasks:
@@ -88,7 +88,7 @@
     - name: Configure firewall to allow Minecraft Bedrock Dedicated Server traffic
       ufw:
         rule: allow
-        port: "{{ server-port }}"
+        port: "{{ minecraft_server_port }}"
         proto: udp
         state: enabled
 
