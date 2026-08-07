@@ -19,7 +19,12 @@
     server_properties: server.properties.j2
 
   tasks:
-    - name: Ensure minecraft user and group exist
+    - name: Ensure minecraft group exists
+      group:
+        name: "{{ minecraft_group }}"
+        state: present  
+
+    - name: Ensure minecraft user exist
       user:
         name: "{{ minecraft_user }}"
         group: "{{ minecraft_group }}"
