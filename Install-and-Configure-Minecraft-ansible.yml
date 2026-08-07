@@ -24,6 +24,7 @@
         name: "{{ minecraft_user }}"
         group: "{{ minecraft_group }}"
         system: "yes"
+        state: present
 
     - name: Ensure minecraft install directory exists
       file:
