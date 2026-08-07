@@ -7,9 +7,11 @@
     minecraft_install_dir: /opt/minecraft_server
     minecraft_user: minecraft
     minecraft_group: minecraft
+    minecraft_server_name: Nicomax Dedicated Server
     minecraft_server_port: 19132
     minecraft_max_players: 4
     minecraft_gamemode: creative
+    minecraft_allow_list: false
     minecraft_difficulty: normal
     minecraft_level_name: Bedrock level
     minecraft_level_seed: Any
@@ -68,14 +70,14 @@
      
     - name: Start Minecraft Bedrock Dedicated Server
       service:
-        name: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/bedrock_server"
+        name: "{{ minecraft_install_dir }}/bedrock_server"
         enabled: "yes"
         state: started
 
     - name: Configure Minecraft Bedrock Dedicated Server
       template:
         src: server.properties.j2
-        dest: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/server.properties"
+        dest: "{{ minecraft_install_dir }}/server.properties"
       notify: Restart Minecraft Bedrock Dedicated Server
 
     - name: Configure firewall to allow SSH traffic
@@ -95,5 +97,5 @@
   handlers:
     - name: Restart Minecraft Bedrock Dedicated Server
       service:
-        name: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/bedrock_server"
+        name: "{{ minecraft_install_dir }}/bedrock_server"
         state: restarted

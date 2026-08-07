@@ -1,4 +1,4 @@
-server-name=Nicomax Dedicated Server
+server-name={{ minecraft_server_name }}
 # Used as the server name
 # Allowed values: Any string without semicolon symbol.
 
@@ -24,7 +24,7 @@ allow-cheats=false
 # If true then cheats like commands can be used.
 # Allowed values: "true" or "false"
 
-max-players={{ minecraft_max_players}}
+max-players={{ minecraft_max_players }}
 # The maximum number of players that can play on the server.
 # Allowed values: Any positive integer
 
@@ -34,7 +34,7 @@ online-mode=true
 # If the server accepts connections from the Internet, then it's highly recommended to enable online-mode.
 # Allowed values: "true" or "false"
 
-allow-list=false
+allow-list={{ minecraft_allow_list }}
 # If true then all connected players must be listed in the separate allowlist.json file.
 # Allowed values: "true" or "false"
 
