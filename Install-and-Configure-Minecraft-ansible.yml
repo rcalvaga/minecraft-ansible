@@ -1,10 +1,9 @@
 - name: Install and Configure Minecraft Bedrock Dedicated Server
   hosts: minecraft_servers
   vars:
-    minecraft_version: 1.18.1
+    minecraft_version: 1.26.40.8
     minecraft_download_url: >-
-      https://platform.minecraft.net/games/bedrock-dedicated-server/{{ minecraft_version }}/bedrock_server-{{
-      minecraft_version }}_linux.tar.gz
+      https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-{{ minecraft_version }}.zip
     minecraft_install_dir: /opt/minecraft_server
     minecraft_user: minecraft
     minecraft_group: minecraft
@@ -78,6 +77,20 @@
         src: server.properties.j2
         dest: "{{ minecraft_install_dir }}/bedrock_server-{{ minecraft_version }}/server.properties"
       notify: Restart Minecraft Bedrock Dedicated Server
+
+    - name: Configure firewall to allow SSH traffic
+      ufw:
+        rule: allow
+        port: 22
+        proto: tcp
+        state: enabled  
+
+    - name: Configure firewall to allow Minecraft Bedrock Dedicated Server traffic
+      ufw:
+        rule: allow
+        port: "{{ server-port }}"
+        proto: udp
+        state: enabled
 
   handlers:
     - name: Restart Minecraft Bedrock Dedicated Server
